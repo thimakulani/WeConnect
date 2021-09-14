@@ -5,9 +5,9 @@
     <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#273F81</item>
-        <item name="colorPrimaryDark">#111122</item>
+        <item name="colorPrimaryDark">#009688</item>
         <item name="colorAccent">#5E709A</item>
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
 
     <style name="customTheme" parent="Theme.AppCompat.Light.NoActionBar">

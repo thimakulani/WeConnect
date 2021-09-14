@@ -43,11 +43,9 @@
         android:layout_alignParentEnd="true"
         android:src="@drawable/baseline_add_white_24dp"
         app:tint="@color/white"
-        app:elevation="0dp"
         android:layout_height="wrap_content"
         app:backgroundTint="@color/theme_color"
         android:layout_margin="10dp"
-        app:fabSize="mini"
         style="@style/Widget.MaterialComponents.FloatingActionButton"
         tools:ignore="ContentDescription" />
 

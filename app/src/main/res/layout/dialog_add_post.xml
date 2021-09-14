@@ -31,18 +31,20 @@
             android:visibility="gone"
             android:scaleType="centerCrop"
             />
-        <androidx.appcompat.widget.AppCompatImageView
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/chose_post_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_camera_alt_black_24dp"
-            android:id="@+id/chose_post_img"
             android:layout_below="@+id/img_post"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:elevation="0dp"
+            android:background="@color/float_transparent"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="5dp"
-            />
-        <androidx.appcompat.widget.AppCompatImageView
+            android:src="@drawable/baseline_camera_alt_black_24dp" />
+        <androidx.appcompat.widget.AppCompatImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_delete_sweep_black_24dp"
@@ -50,6 +52,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
+            android:elevation="0dp"
+            android:background="@color/float_transparent"
             android:visibility="gone"
             android:id="@+id/remove_post_img"
             android:layout_toEndOf="@+id/chose_post_img"

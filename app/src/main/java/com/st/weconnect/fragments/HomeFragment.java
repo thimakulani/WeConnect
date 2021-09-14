@@ -56,12 +56,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         FloatingActionButton fab_new_post = (FloatingActionButton) view.findViewById(R.id.fab_add_post);
-
-        /*testing the
-        custom dialog layout
-         */
-
-        //call to show post dialog
         fab_new_post.setOnClickListener(this::ShowPostDialog);
         ConnectViews(view);
 
@@ -82,34 +76,30 @@ public class HomeFragment extends Fragment {
             FirebaseFirestore
                     .getInstance()
                     .collection("Feeds")
-                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    .addSnapshotListener((value, error) -> {
 
 
-                            if (value != null) {
+                        if (value != null) {
 
-                                for (final DocumentChange dc : value.getDocumentChanges()) {
-                                    switch (dc.getType()) {
-                                        case ADDED:
-                                            Items.add(dc.getDocument().toObject(PostsModel.class));
-                                            adapter.notifyDataSetChanged();
+                            for (final DocumentChange dc : value.getDocumentChanges()) {
+                                switch (dc.getType()) {
+                                    case ADDED:
+                                        Items.add(dc.getDocument().toObject(PostsModel.class));
+                                        adapter.notifyDataSetChanged();
 
-                                            break;
-                                        case MODIFIED:
-                                            Items.set(dc.getOldIndex(), dc.getDocument().toObject(PostsModel.class));
-                                            adapter.notifyDataSetChanged();
-                                            break;
-                                        case REMOVED:
-                                            Items.remove(dc.getOldIndex());
-                                            adapter.notifyDataSetChanged();
-                                    }
+                                        break;
+                                    case MODIFIED:
+                                        Items.set(dc.getOldIndex(), dc.getDocument().toObject(PostsModel.class));
+                                        adapter.notifyDataSetChanged();
+                                        break;
+                                    case REMOVED:
+                                        Items.remove(dc.getOldIndex());
+                                        adapter.notifyDataSetChanged();
                                 }
                             }
-                            mShimmerViewContainer.stopShimmerAnimation();
-                            mShimmerViewContainer.setVisibility(View.GONE);
                         }
+                        mShimmerViewContainer.stopShimmerAnimation();
+                        mShimmerViewContainer.setVisibility(View.GONE);
                     });
 
         } catch (Exception ex) {

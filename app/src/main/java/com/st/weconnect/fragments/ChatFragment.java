@@ -1,16 +1,14 @@
 package com.st.weconnect.fragments;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.st.weconnect.R;
 import com.st.weconnect.adapters.ChatsAdapter;
@@ -40,24 +38,8 @@ public class ChatFragment extends Fragment {
     {
         ChatsAdapter chatsAdapter;
         ArrayList<ChatsModel> chatsLists = new ArrayList<>();
-        RecyclerView chatsRecyclerView = (RecyclerView) view.findViewById(R.id.chats_rv);
+        RecyclerView chatsRecyclerView = view.findViewById(R.id.chats_rv);
 
-        try
-        {
-            for(int i=0; i<25;i++)
-            {
-                ChatsModel mdl = new ChatsModel("greatings", "Hello", null);
-                chatsLists.add(mdl);
-            }
-
-            //ChatsAdapter adapter = new ChatsAdapter(chatsLists);
-            chatsAdapter = new ChatsAdapter(chatsLists);
-            chatsRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-            chatsRecyclerView.setAdapter(chatsAdapter);
-
-        } catch (Exception e)
-        {
-            Toast.makeText(view.getContext(),""+e.getMessage(),Toast.LENGTH_LONG).show();
-        }
+        
     }
 }

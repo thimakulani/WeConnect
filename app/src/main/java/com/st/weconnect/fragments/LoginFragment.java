@@ -107,7 +107,7 @@ public class LoginFragment extends Fragment {
                     InputPassword.setError("Password cannot be empty");
                     return;
                 }
-                if (!(email.isEmpty() && password.isEmpty()))
+                if (!email.isEmpty() && !password.isEmpty())
                 {
                     auth.signInWithEmailAndPassword(email, password)
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {

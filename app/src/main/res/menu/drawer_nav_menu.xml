@@ -2,6 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group>
         <item
+            android:id="@+id/nav_home"
+            android:title="@string/txt_bottom_nav_home"
+            android:icon="@drawable/baseline_home_black_24dp" />
+        <item
+            android:id="@+id/nav_friends"
+            android:title="@string/txt_bottom_nav_people"
+            android:icon="@drawable/baseline_people_alt_black_24dp"
+            />
+        <item
+            android:id="@+id/nav_chat"
+            android:title="@string/txt_bottom_nav_chat"
+            android:icon="@drawable/ic_chat"/>
+        <item
             android:id="@+id/nav_profile"
             android:title="@string/txt_account"
             android:icon="@drawable/baseline_account_circle_white_24dp" />

@@ -11,7 +11,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         >
 
         <com.google.android.material.appbar.AppBarLayout
@@ -19,6 +18,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/appBarLayout1"
             app:elevation="0dp"
+            android:layout_margin="7dp"
+            android:background="@drawable/toobar_style"
+
            >
             <com.google.android.material.appbar.MaterialToolbar
                 android:layout_width="match_parent"
@@ -34,16 +36,9 @@
             android:layout_height="match_parent"
             android:id="@+id/host_frag"
             android:layout_below="@+id/appBarLayout1"
-            android:layout_above="@+id/bottom_nav_menu"/>
+            />
             <!--android:layout_above="@id/bottom_nav_menu"-->
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/bottom_nav_menu"
-            app:menu="@menu/bottom_nav_menu"
-            style="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface" />
 
     </RelativeLayout>
 

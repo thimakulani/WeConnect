@@ -2,7 +2,7 @@ package com.st.weconnect.model;
 
 public class PostsModel {
     private String date_posted;
-    private String id;
+    private String Id;
     private String uid;
     private String url;
     private String message;
@@ -16,11 +16,11 @@ public class PostsModel {
     }
 
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.Id = id;
     }
 
     public String getUid() {
@@ -52,7 +52,7 @@ public class PostsModel {
 
     public PostsModel(String date_posted, String id, String uid, String url, String message) {
         this.date_posted = date_posted;
-        this.id = id;
+        this.Id = id;
         this.uid = uid;
         this.url = url;
         this.message = message;

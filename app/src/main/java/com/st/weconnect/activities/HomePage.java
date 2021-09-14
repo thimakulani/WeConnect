@@ -60,7 +60,6 @@ public class HomePage extends AppCompatActivity {
 
     private void initComponents() {
 
-        bottomnavigation = findViewById(R.id.bottom_nav_menu);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -69,50 +68,9 @@ public class HomePage extends AppCompatActivity {
 
         //bottomnavigation.setOnNavigationItemSelectedListener(bottom_nav_home, true);
 
-        listenToEvent();
+
     }
     //support bottom navigation
-    private void listenToEvent()
-    {
-        bottomnavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                Fragment fragment = null;
-
-                switch (item.getItemId()) {
-                    case R.id.bottom_nav_home:
-                        fragment = new HomeFragment();
-                        tool_bar.setTitle("Home");
-                        break;
-                    case R.id.bottom_nav_friends:
-                        fragment = new FriendsFragments();
-                        tool_bar.setTitle("Friends");
-                        break;
-                    /*case R.id.bottom_nav_requests:
-                        fragment = new RequestsFragment();
-                        tool_bar.setTitle("Requests");
-                        break;*/
-                    case R.id.bottom_nav_profile:
-                        fragment = new ProfileFragment();
-                        tool_bar.setTitle("Profile");
-                        break;
-                    case R.id.bottom_nav_chat:
-                        fragment = new ChatFragment();
-                        tool_bar.setTitle("Chat");
-                        break;
-                }
-
-                //get the fragment support
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.host_frag,fragment)
-                        .commit();
-               return true;
-            }
-        });
-    }
 
     private void ConnectViews()
     {
@@ -128,28 +86,44 @@ public class HomePage extends AppCompatActivity {
 
             }
         });
-        drawer_nav_menu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.nav_profile){
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.host_frag, new FriendProfileFragment())
-                            .commit();
-                }
-                if (item.getItemId() == R.id.nav_about)
-                {
-                    //display this message
-                    Toast.makeText(getApplicationContext(), "Info about the App", Toast.LENGTH_SHORT).show();
-                }
+        drawer_nav_menu.setNavigationItemSelectedListener(item -> {
 
-                if (item.getItemId() == R.id.nav_logout)
-                {
-                    //call method to log out user
+            Fragment fragment = null;
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    fragment = new HomeFragment();
+                    tool_bar.setTitle("Home");
+                    break;
+                case R.id.nav_friends:
+                    fragment = new FriendsFragments();
+                    tool_bar.setTitle("Friends");
+                    break;
+                case R.id.nav_profile:
+                    fragment = new ProfileFragment();
+                    tool_bar.setTitle("Profile");
+                    break;
+                case R.id.nav_chat:
+                    fragment = new ChatFragment();
+                    tool_bar.setTitle("Chat");
+                    break;
+                case R.id.nav_about:
+                    fragment = new ChatFragment();
+                    tool_bar.setTitle("About");
+                    break;
+                case R.id.nav_logout:
                     UserLogout();
-                }
-
-                return true;
+                    break;
             }
+
+            //get the fragment support
+            if(fragment != null){
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.host_frag,fragment)
+                        .commit();
+            }
+            drawer_layout.closeDrawers();
+            return true;
         });
 
     }
