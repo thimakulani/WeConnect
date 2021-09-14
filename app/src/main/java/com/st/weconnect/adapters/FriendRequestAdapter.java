@@ -47,7 +47,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
         @Override
         public void onClick(View v) {
 
-            int pos = getAdapterPosition();
+            int pos = getAbsoluteAdapterPosition();
 
             if (v.getId() == accept_btn.getId())
             {

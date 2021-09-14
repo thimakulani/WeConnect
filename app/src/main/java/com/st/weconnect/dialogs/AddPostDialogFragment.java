@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.DialogFragment;
 
@@ -59,13 +60,13 @@ public class AddPostDialogFragment extends DialogFragment {
         return view;
     }
     AppCompatImageView img_post;
-    AppCompatImageView remove_post_img;
+    AppCompatImageButton remove_post_img;
     private void ConnectView(final View view) {
 
         MaterialButton btn_post_feed = view.findViewById(R.id.btn_post_feed);
         img_post = view.findViewById(R.id.img_post);
         remove_post_img = view.findViewById(R.id.remove_post_img);
-        AppCompatImageView chose_post_img = view.findViewById(R.id.chose_post_img);
+        AppCompatImageButton chose_post_img = view.findViewById(R.id.chose_post_img);
         MaterialToolbar toolbar =  view.findViewById(R.id.tool_bar_add_post);
         final TextInputEditText input_message = view.findViewById(R.id.input_post_message);
 
@@ -98,99 +99,72 @@ public class AddPostDialogFragment extends DialogFragment {
 
 
 
-        btn_post_feed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_post_feed.setOnClickListener(v -> {
 
-                if(input_message.getText().toString().isEmpty()){
-                    input_message.setError("Type something");
-                    return;
-                }
-
-                String currentDate = new SimpleDateFormat("dd/MMM/yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
-
-                PostsModel posts = new PostsModel(currentDate, null, FirebaseAuth.getInstance().getUid(),
-                        null,input_message.getText().toString());
-                FirebaseFirestore.getInstance()
-                        .collection("Feeds")
-                        .add(posts)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(final DocumentReference documentReference)
-                            {
-                                documentReference.update("id", documentReference.getId());
-
-                                if(img_uri != null)
-                                {
-                                    final SweetAlertDialog pDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.PROGRESS_TYPE);
-                                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                                    pDialog.setTitleText("Loading");
-                                    pDialog.setCancelable(false);
-                                    pDialog.show();
-
-
-                                    FirebaseStorage.getInstance()
-                                            .getReference()
-                                            .child("Feeds")
-                                            .child(documentReference.getId())
-                                            .putFile(img_uri)
-                                            .addOnSuccessListener(taskSnapshot -> taskSnapshot.getStorage()
-                                                    .getDownloadUrl().addOnSuccessListener(uri -> {
-                                                        FirebaseFirestore.getInstance()
-                                                                .collection("Feeds")
-                                                                .document(documentReference.getId())
-                                                                .update("url", uri.toString());
-
-                                                        pDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                                        pDialog.setTitleText("Success!!");
-                                                        pDialog.setContentText("Successfully added!");
-                                                        pDialog.setConfirmText("Ok");
-                                                        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                            @Override
-                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                                dismiss();
-                                                                sweetAlertDialog.dismissWithAnimation();
-                                                            }
-                                                        });
-
-                                                    })).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                            pDialog.dismissWithAnimation();
-                                        }
-                                    });
-
-                                }
-                                else{
-                                    SweetAlertDialog dlg = new SweetAlertDialog(view.getContext(), SweetAlertDialog.SUCCESS_TYPE);
-                                    dlg.setTitleText("Success!!");
-                                    dlg.setContentText("Successfully Posted");
-                                    dlg.setConfirmText("OK");
-                                    dlg.setCancelable(false);
-                                    dlg.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            dismiss();
-                                            sweetAlertDialog.dismissWithAnimation();
-                                        }
-                                    });
-                                    dlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                        @Override
-                                        public void onDismiss(DialogInterface dialog) {
-                                            dismiss();
-                                        }
-                                    });
-                                    dlg.show();
-                                }
-
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
+            if(input_message.getText().toString().isEmpty()){
+                input_message.setError("Type something");
+                return;
             }
+
+            String currentDate = new SimpleDateFormat("dd/MMM/yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
+
+            PostsModel posts = new PostsModel(currentDate, null, FirebaseAuth.getInstance().getUid(),
+                    null,input_message.getText().toString());
+            FirebaseFirestore.getInstance()
+                    .collection("Feeds")
+                    .add(posts)
+                    .addOnSuccessListener(documentReference -> {
+                        documentReference.update("id", documentReference.getId());
+                        if(img_uri != null)
+                        {
+                            final SweetAlertDialog pDialog = new SweetAlertDialog(view.getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            pDialog.setTitleText("Loading");
+                            pDialog.setCancelable(false);
+                            pDialog.show();
+
+
+                            FirebaseStorage.getInstance()
+                                    .getReference()
+                                    .child("Feeds")
+                                    .child(documentReference.getId())
+                                    .putFile(img_uri)
+                                    .addOnSuccessListener(taskSnapshot -> taskSnapshot.getStorage()
+                                            .getDownloadUrl().addOnSuccessListener(uri -> {
+                                                FirebaseFirestore.getInstance()
+                                                        .collection("Feeds")
+                                                        .document(documentReference.getId())
+                                                        .update("url", uri.toString());
+
+                                                pDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                                pDialog.setTitleText("Success!!");
+                                                pDialog.setContentText("Successfully added!");
+                                                pDialog.setConfirmText("Ok");
+                                                pDialog.setConfirmClickListener(sweetAlertDialog -> {
+                                                    dismiss();
+                                                    sweetAlertDialog.dismissWithAnimation();
+                                                });
+
+                                            })).addOnCompleteListener(task -> pDialog.dismissWithAnimation());
+
+                        }
+                        else{
+                            SweetAlertDialog dlg = new SweetAlertDialog(view.getContext(), SweetAlertDialog.SUCCESS_TYPE);
+                            dlg.setTitleText("Success!!");
+                            dlg.setContentText("Successfully Posted");
+                            dlg.setConfirmText("OK");
+                            dlg.setCancelable(false);
+                            dlg.setConfirmClickListener(sweetAlertDialog -> {
+                                dismiss();
+                                sweetAlertDialog.dismissWithAnimation();
+                            });
+                            dlg.setOnDismissListener(dialog -> dismiss());
+                            dlg.show();
+                        }
+
+                    }).addOnFailureListener(e -> {
+
+                    });
         });
 
 

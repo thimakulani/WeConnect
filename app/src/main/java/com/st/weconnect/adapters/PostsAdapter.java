@@ -1,6 +1,9 @@
 package com.st.weconnect.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +12,17 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.cazaea.sweetalert.SweetAlertDialog;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -68,7 +76,57 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
                     assert value != null;
                     if(value.exists()){
                         AppUser user = value.toObject(AppUser.class);
-                        holder.Row_TxtSenderName.setText(String.format("%s %s", user.name, user.lastName));
+                        holder.Row_TxtSenderName.setText(String.format("%s %s", user.getName(), user.getLastName()));
+
+                        //delete button to be enabled
+                        if(user.getId().equals(FirebaseAuth.getInstance().getUid())){
+                            holder.Row_DeletePost.setVisibility(View.VISIBLE);
+                            holder.Row_DeletePost.setOnClickListener(v -> {
+
+                                SweetAlertDialog pDialog = new SweetAlertDialog(holder.itemView.getContext(), SweetAlertDialog.WARNING_TYPE);
+                                pDialog.setTitleText("Confirm");
+
+                                pDialog.setCancelable(true);
+                                pDialog.setCancelText("No");
+                                pDialog.setContentText("Are you sure you want to delete this post");
+                                pDialog.setConfirmText("Yes")
+                                        .setConfirmClickListener(sweetAlertDialog -> {
+                                            FirebaseFirestore.getInstance()
+                                                    .collection("Feeds")
+                                                    .document(Items.get(position).getId())
+                                                    .delete();
+                                            sweetAlertDialog.dismiss();
+                                        });
+                                pDialog.setCancelClickListener(Dialog::dismiss);
+                                pDialog.show();
+
+
+                            });
+                        }
+
+
+
+
+                        if(user.getImg_url() == null){
+                            ColorGenerator generator = ColorGenerator.MATERIAL;
+                            TextDrawable drawable2 = TextDrawable.builder()
+                                    .beginConfig()
+
+                                    .useFont(Typeface.DEFAULT)
+                                    .fontSize(30) /* size in px */
+                                    .bold()
+                                    .toUpperCase()
+                                    .endConfig()
+                                    .buildRound(user.getName().substring(0,1), generator.getRandomColor());
+                            holder.Row_SenderProfile.setImageDrawable(drawable2);
+                        }
+                        else{
+                            Picasso.get().load(user.getImg_url())
+                                    .resize(200, 200)
+                                    .into(holder.Row_SenderProfile);
+                        }
+
+
                     }
                 });
 
@@ -104,7 +162,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
 
         public AppCompatImageView Row_SenderProfile;
         public AppCompatImageView Row_PostImage;
-        public AppCompatImageView Row_DeletePost;
+        public AppCompatImageButton Row_DeletePost;
         public AppCompatImageView Row_EditPost;
         public MaterialTextView Row_TxtSenderName;
         public MaterialTextView Row_TxtPostMessage;
@@ -122,7 +180,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
 
             Row_PostImage = (AppCompatImageView)itemView.findViewById(R.id.row_post_img);
             Row_SenderProfile = (AppCompatImageView)itemView.findViewById(R.id.row_post_user_profile);
-            Row_DeletePost = (AppCompatImageView)itemView.findViewById(R.id.row_post_delete);
+            Row_DeletePost = (AppCompatImageButton)itemView.findViewById(R.id.row_post_delete);
             Row_EditPost = (AppCompatImageView)itemView.findViewById(R.id.row_post_edit);
             Row_CommentImg = (AppCompatImageView)itemView.findViewById(R.id.row_post_comment_img);
             Row_LikeImg = (AppCompatImageView)itemView.findViewById(R.id.row_post_like_img);
@@ -142,10 +200,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
 
             if (v.getId() == Row_CommentImg.getId())
             {
-                int pos = getAdapterPosition();
+                int pos = getAbsoluteAdapterPosition();
 
                 //clickListener.onButtonClick(Items.get(pos).getId(), pos);
-                Toast.makeText(mView.getContext(), Items.get(pos).getId(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(mView.getContext(), Items.get(pos).getId(),Toast.LENGTH_LONG).show();
 
                 PopUpCommentsDialog dlg = new PopUpCommentsDialog(Items.get(pos).getId());
                 FragmentTransaction ft = Fm.beginTransaction();

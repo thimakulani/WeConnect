@@ -43,7 +43,7 @@
     <string name="approve_text">approve</string>
     <string name="nav_requests_text">Requests</string>
     <string name="nav_profile_text">profile</string>
-    <string name="add_friend_text">add friend</string>
+    <string name="add_friend_text">add</string>
     <string name="your_comment_hint_text">Your Comment here…</string>
     <string name="loading_comment_text">Loading Comment…</string>
     <string name="txt_write_a_feed">Write a feed</string>

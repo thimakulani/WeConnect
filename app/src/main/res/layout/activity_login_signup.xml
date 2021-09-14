@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:scaleType="fitCenter"
         android:alpha="0.5"
-        app:srcCompat="@mipmap/icon" />
+        app:srcCompat="@drawable/wc" />
 
     <FrameLayout
         android:id="@+id/FragHost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/imageView"
-        android:layout_marginTop="-50dp" />
-</RelativeLayout>
+        android:layout_height="0dp"
+        android:layout_weight="80"
+         />
+</LinearLayout>

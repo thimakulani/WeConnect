@@ -52,15 +52,15 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
 
-        holder.txtUsername.setText(friendsList.get(position).name);
-        holder.txtStatus.setText("oFFLINE");
+        holder.txtUsername.setText(friendsList.get(position).getName());
+        holder.txtStatus.setText("Offline");
 
         if(friendsList.get(position).getId().contains("-MWF5iu9-dv9p0JAPWxR")){
             Toast.makeText(holder.itemView.getContext(), friendsList.get(position).getId(), Toast.LENGTH_SHORT).show();
             FirebaseDatabase.getInstance()
                     .getReference()
                     .child("Online")
-                    .child(friendsList.get(position).id)
+                    .child(friendsList.get(position).getId())
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
